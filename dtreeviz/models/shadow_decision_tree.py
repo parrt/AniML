@@ -7,6 +7,8 @@ import numpy as np
 import pandas as pd
 import sklearn
 
+from dtreeviz import utils
+
 
 class ShadowDecTree(ABC):
     """
@@ -59,7 +61,7 @@ class ShadowDecTree(ABC):
         self.y_data = ShadowDecTree._get_y_data(y_data)
         self.root, self.leaves, self.internal = self._get_tree_nodes()
         if self.is_classifier():
-            self.class_names = self._normalize_class_names(class_names)
+            self.class_names = utils.normalize_class_names(class_names, self.nclasses())
 
     @abstractmethod
     def is_fit(self) -> bool:
@@ -566,7 +568,6 @@ class ShadowDecTreeNode():
 
     def split_samples(self) -> Tuple[np.ndarray, np.ndarray]:
         """Returns the list of indexes to the left and the right of the split value."""
-
         return self.shadow_tree.get_split_samples(self.id)
 
     def isleaf(self) -> bool:
